@@ -1,0 +1,28 @@
+---
+- name: Cloning Epics-base repo
+  hosts: all
+  become: yes
+  tasks:
+
+    # - git:
+    #     repo: 'https://github.com/epics-base/epics-base.git'
+    #     dest: /home/sathvika/Downloads/epics-base
+    #     version: 3.15 
+
+    # - name: Copy from Downloads to /usr/local/epics
+    #   command: cp -r /home/sathvika/Downloads/epics-base /usr/local/epics
+
+     - name: Install gcc,g++
+     - yum:
+         name: 
+           - gcc
+           - g++
+         state: present
+
+      # make: 
+      #   chdir: /usr/local/epics
+      
+
+      
+    
+      
