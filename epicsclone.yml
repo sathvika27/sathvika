@@ -23,7 +23,6 @@
 
     - name: Create a symbolic link
       file:
-        path: 
         src: /usr/local/epics/epics-base
         dest: /usr/local/epics/base
         state: link
