@@ -4,25 +4,45 @@
   become: yes
   tasks:
 
-    # - git:
-    #     repo: 'https://github.com/epics-base/epics-base.git'
-    #     dest: /home/sathvika/Downloads/epics-base
-    #     version: 3.15 
+    - git:
+        repo: 'https://github.com/epics-base/epics-base.git'
+        dest: /home/sathvika/Downloads/epics-base
+        version: 3.15 
 
-    # - name: Copy from Downloads to /usr/local/epics
-    #   command: cp -r /home/sathvika/Downloads/epics-base /usr/local/epics
+    - name: Copy from Downloads to /usr/local/epics
+      command: cp -r /home/sathvika/Downloads /usr/local/epics
 
-     - name: Install gcc,g++
-     - yum:
-         name: 
-           - gcc
-           - g++
-         state: present
+    - name: Install 
+      apt:
+        name: "{{ item }}"
+        state: present
+      with_items:
+       - 'make'
+       - 'gcc'
+       - 'g++'
 
-      # make: 
-      #   chdir: /usr/local/epics
+    - name: Create a symbolic link
+      file:
+        path: 
+        src: /usr/local/epics/epics-base
+        dest: /usr/local/epics/base
+        state: link
+
+    - name: Ansible Insert multiple lines in .bashrc
+      blockinfile:
+        dest: /home/sathvika/.bashrc
+        block: |
+          export EPICS_BASE=/usr/local/epics/base
+          export EPICS_HOST_ARCH=$(${EPICS_BASE}/startup/EpicsHostArch)
+          export PATH=${EPICS_BASE}/bin/${EPICS_HOST_ARCH}:${PATH}
+        backup: yes
+
+    - name: make target directory
+      make: 
+        chdir: /usr/local/epics/base
+
+
       
-
       
     
       
