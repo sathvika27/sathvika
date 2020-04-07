@@ -1,0 +1,10 @@
+---
+- name: Copying from one directory to another
+  hosts: all
+  become: yes
+  tasks:
+
+    - name: copy
+      copy:
+        src: /home/sathvika/Desktop/sample.txt
+        dest: /home/sathvika/Desktop/ansibleyml/sathvika
