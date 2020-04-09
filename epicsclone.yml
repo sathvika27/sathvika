@@ -2,17 +2,21 @@
 - name: Cloning Epics-base repo
   hosts: all
   become: yes
+  vars: 
+    Home: "{{ lookup('env','HOME') }}" 
   tasks:
 
     - git:
         repo: 'https://github.com/epics-base/epics-base.git'
-        dest: /home/sathvika/Downloads/epics-base
+        dest: "{{ Home }}/Downloads/epics-base"
         version: 3.15 
 
     - name: Copy from Downloads to /usr/local/epics
-      command: cp -r /home/sathvika/Downloads /usr/local/epics
+      copy:
+        src: "{{ Home }}/Downloads/epics-base"
+        dest: /usr/local/epics
 
-    - name: Install 
+    - name: Install the required packages
       apt:
         name: "{{ item }}"
         state: present
@@ -29,7 +33,7 @@
 
     - name: Ansible Insert multiple lines in .bashrc
       blockinfile:
-        dest: /home/sathvika/.bashrc
+        dest: "{{ Home }}/.bashrc"
         block: |
           export EPICS_BASE=/usr/local/epics/base
           export EPICS_HOST_ARCH=$(${EPICS_BASE}/startup/EpicsHostArch)
